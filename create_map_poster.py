@@ -252,9 +252,15 @@ def create_poster(city, country, point, dist, output_file):
     # 3. Plot Layers
     # Layer 1: Polygons
     if water is not None and not water.empty:
-        water.plot(ax=ax, facecolor=THEME['water'], edgecolor='none', zorder=1)
+        water_polys = water[water.geometry.type.isin(['Polygon', 'MultiPolygon'])]
+        if not water_polys.empty:
+            water_polys.plot(ax=ax, facecolor=THEME['water'], edgecolor='none', zorder=1)
+
+
     if parks is not None and not parks.empty:
-        parks.plot(ax=ax, facecolor=THEME['parks'], edgecolor='none', zorder=2)
+        parks_polys = parks[parks.geometry.type.isin(['Polygon', 'MultiPolygon'])]
+        if not parks_polys.empty:
+            parks_polys.plot(ax=ax, facecolor=THEME['parks'], edgecolor='none', zorder=2)
     
     # Layer 2: Roads with hierarchy coloring
     print("Applying road hierarchy colors...")
